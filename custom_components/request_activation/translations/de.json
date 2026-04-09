@@ -17,12 +17,12 @@
         "data": {
           "request_entities": "Request-Entities",
           "enabled_entity": "Aktivierungs-Entity",
-          "target_entity": "Ziel-Entity"
+          "target_entities": "Ziel-Entities"
         },
         "data_description": {
           "request_entities": "Boolesche Entities, die als Anforderungsquellen dienen. Der Ausgang ist AN, wenn mindestens eine davon AN ist.",
           "enabled_entity": "Optionale Entity zum Aktivieren/Deaktivieren der Gruppe. Bei AUS ist der Ausgang immer AUS, unabhängig von den Anforderungen.",
-          "target_entity": "Optionale Entity, die direkt gesteuert wird. Wird basierend auf dem Aktivierungszustand ein-/ausgeschaltet."
+          "target_entities": "Optionale Entities, die direkt gesteuert werden. Werden basierend auf dem Aktivierungszustand ein-/ausgeschaltet."
         }
       }
     },
@@ -38,12 +38,12 @@
         "data": {
           "request_entities": "Request-Entities",
           "enabled_entity": "Aktivierungs-Entity",
-          "target_entity": "Ziel-Entity"
+          "target_entities": "Ziel-Entities"
         },
         "data_description": {
           "request_entities": "Boolesche Entities, die als Anforderungsquellen dienen. Der Ausgang ist AN, wenn mindestens eine davon AN ist.",
           "enabled_entity": "Optionale Entity zum Aktivieren/Deaktivieren der Gruppe. Bei AUS ist der Ausgang immer AUS, unabhängig von den Anforderungen.",
-          "target_entity": "Optionale Entity, die direkt gesteuert wird. Wird basierend auf dem Aktivierungszustand ein-/ausgeschaltet."
+          "target_entities": "Optionale Entities, die direkt gesteuert werden. Werden basierend auf dem Aktivierungszustand ein-/ausgeschaltet."
         }
       }
     },

@@ -23,7 +23,7 @@ from homeassistant.helpers.selector import (
 from .const import (
     CONF_ENABLED_ENTITY,
     CONF_REQUEST_ENTITIES,
-    CONF_TARGET_ENTITY,
+    CONF_TARGET_ENTITIES,
     DOMAIN,
 )
 
@@ -53,11 +53,12 @@ def _entities_schema(
                 )
             ),
             vol.Optional(
-                CONF_TARGET_ENTITY,
-                description={"suggested_value": defaults.get(CONF_TARGET_ENTITY)},
+                CONF_TARGET_ENTITIES,
+                default=defaults.get(CONF_TARGET_ENTITIES, []),
             ): EntitySelector(
                 EntitySelectorConfig(
                     domain=["switch", "light", "input_boolean", "fan"],
+                    multiple=True,
                 )
             ),
         }
@@ -67,7 +68,7 @@ def _entities_schema(
 class RequestActivationConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Request Activation."""
 
-    VERSION = 1
+    VERSION = 2
 
     def __init__(self) -> None:
         """Initialize the config flow."""
@@ -114,7 +115,7 @@ class RequestActivationConfigFlow(ConfigFlow, domain=DOMAIN):
                     options={
                         CONF_REQUEST_ENTITIES: user_input[CONF_REQUEST_ENTITIES],
                         CONF_ENABLED_ENTITY: user_input.get(CONF_ENABLED_ENTITY),
-                        CONF_TARGET_ENTITY: user_input.get(CONF_TARGET_ENTITY),
+                        CONF_TARGET_ENTITIES: user_input.get(CONF_TARGET_ENTITIES, []),
                     },
                 )
 
@@ -142,7 +143,7 @@ class RequestActivationOptionsFlow(OptionsFlowWithReload):
                     data={
                         CONF_REQUEST_ENTITIES: user_input[CONF_REQUEST_ENTITIES],
                         CONF_ENABLED_ENTITY: user_input.get(CONF_ENABLED_ENTITY),
-                        CONF_TARGET_ENTITY: user_input.get(CONF_TARGET_ENTITY),
+                        CONF_TARGET_ENTITIES: user_input.get(CONF_TARGET_ENTITIES, []),
                     },
                 )
 

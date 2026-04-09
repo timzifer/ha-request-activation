@@ -9,7 +9,7 @@ from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
 
-from .const import CONF_ENABLED_ENTITY, CONF_REQUEST_ENTITIES, CONF_TARGET_ENTITY
+from .const import CONF_ENABLED_ENTITY, CONF_REQUEST_ENTITIES, CONF_TARGET_ENTITIES
 
 _IGNORED_STATES = {STATE_UNAVAILABLE, STATE_UNKNOWN}
 
@@ -80,6 +80,7 @@ class RequestActivationBinarySensor(BinarySensorEntity):
         return {
             "active_requests": active,
             "total_requests": len(request_entities),
+            "target_entities": self._entry.options.get(CONF_TARGET_ENTITIES, []),
         }
 
     async def async_added_to_hass(self) -> None:
@@ -100,7 +101,7 @@ class RequestActivationBinarySensor(BinarySensorEntity):
 
         # Set initial previous state and sync target
         self._previous_is_on = self.is_on
-        await self._sync_target_entity()
+        await self._sync_target_entities()
 
     @callback
     def _async_state_changed(self, event: Event) -> None:
@@ -110,17 +111,17 @@ class RequestActivationBinarySensor(BinarySensorEntity):
 
         if new_is_on != self._previous_is_on:
             self._previous_is_on = new_is_on
-            self.hass.async_create_task(self._sync_target_entity())
+            self.hass.async_create_task(self._sync_target_entities())
 
-    async def _sync_target_entity(self) -> None:
-        """Turn target entity on/off based on current state."""
-        target_entity = self._entry.options.get(CONF_TARGET_ENTITY)
-        if not target_entity:
+    async def _sync_target_entities(self) -> None:
+        """Turn target entities on/off based on current state."""
+        target_entities = self._entry.options.get(CONF_TARGET_ENTITIES, [])
+        if not target_entities:
             return
 
         service = "turn_on" if self.is_on else "turn_off"
         await self.hass.services.async_call(
             "homeassistant",
             service,
-            {"entity_id": target_entity},
+            {"entity_id": target_entities},
         )
