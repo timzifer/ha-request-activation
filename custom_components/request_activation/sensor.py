@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_NAME, STATE_ON
+from homeassistant.const import CONF_NAME, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
 
 from .const import CONF_REQUEST_ENTITIES
+
+_IGNORED_STATES = {STATE_UNAVAILABLE, STATE_UNKNOWN}
 
 
 async def async_setup_entry(
@@ -34,51 +36,40 @@ class RequestActivationLevelSensor(SensorEntity):
         self._entry = entry
         self._attr_name = f"{entry.data[CONF_NAME]} Level"
         self._attr_unique_id = f"{entry.entry_id}_level"
-        self._unsub_listeners: list[callback] = []
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
         """Return the number of active request entities."""
         request_entities: list[str] = self._entry.options.get(
             CONF_REQUEST_ENTITIES, []
         )
         count = 0
+        all_unknown = True
         for entity_id in request_entities:
             state = self.hass.states.get(entity_id)
-            if state and state.state == STATE_ON:
-                count += 1
+            if state is not None and state.state not in _IGNORED_STATES:
+                all_unknown = False
+                if state.state == STATE_ON:
+                    count += 1
+
+        if all_unknown and request_entities:
+            return None
         return count
 
     async def async_added_to_hass(self) -> None:
         """Register state listeners when added to hass."""
-        self._subscribe_to_entities()
-
-    def _subscribe_to_entities(self) -> None:
-        """Subscribe to state changes of request entities."""
-        self._unsubscribe()
-
         request_entities = list(
             self._entry.options.get(CONF_REQUEST_ENTITIES, [])
         )
 
         if request_entities:
-            self._unsub_listeners.append(
+            self.async_on_remove(
                 async_track_state_change_event(
                     self.hass, request_entities, self._async_state_changed
                 )
             )
 
-    def _unsubscribe(self) -> None:
-        """Remove all state listeners."""
-        for unsub in self._unsub_listeners:
-            unsub()
-        self._unsub_listeners.clear()
-
     @callback
     def _async_state_changed(self, event: Event) -> None:
         """Handle state changes of tracked entities."""
         self.async_write_ha_state()
-
-    async def async_will_remove_from_hass(self) -> None:
-        """Clean up listeners when removed."""
-        self._unsubscribe()
