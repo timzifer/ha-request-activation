@@ -1,0 +1,54 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Request-Gruppe erstellen",
+        "description": "Erstelle eine neue Request-Activation-Gruppe, die mehrere boolesche Entities per ODER-Logik kombiniert.",
+        "data": {
+          "name": "Gruppenname"
+        },
+        "data_description": {
+          "name": "Ein beschreibender Name für diese Request-Gruppe (z.B. 'Warmwasser-Zirkulationspumpe')."
+        }
+      },
+      "entities": {
+        "title": "Entities konfigurieren",
+        "description": "Wähle die Entities für diese Request-Gruppe aus.",
+        "data": {
+          "request_entities": "Request-Entities",
+          "enabled_entity": "Aktivierungs-Entity",
+          "target_entity": "Ziel-Entity"
+        },
+        "data_description": {
+          "request_entities": "Boolesche Entities, die als Anforderungsquellen dienen. Der Ausgang ist AN, wenn mindestens eine davon AN ist.",
+          "enabled_entity": "Optionale Entity zum Aktivieren/Deaktivieren der Gruppe. Bei AUS ist der Ausgang immer AUS, unabhängig von den Anforderungen.",
+          "target_entity": "Optionale Entity, die direkt gesteuert wird. Wird basierend auf dem Aktivierungszustand ein-/ausgeschaltet."
+        }
+      }
+    },
+    "error": {
+      "no_request_entities": "Es muss mindestens eine Request-Entity ausgewählt werden."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Entities konfigurieren",
+        "description": "Ändere die Entities für diese Request-Gruppe.",
+        "data": {
+          "request_entities": "Request-Entities",
+          "enabled_entity": "Aktivierungs-Entity",
+          "target_entity": "Ziel-Entity"
+        },
+        "data_description": {
+          "request_entities": "Boolesche Entities, die als Anforderungsquellen dienen. Der Ausgang ist AN, wenn mindestens eine davon AN ist.",
+          "enabled_entity": "Optionale Entity zum Aktivieren/Deaktivieren der Gruppe. Bei AUS ist der Ausgang immer AUS, unabhängig von den Anforderungen.",
+          "target_entity": "Optionale Entity, die direkt gesteuert wird. Wird basierend auf dem Aktivierungszustand ein-/ausgeschaltet."
+        }
+      }
+    },
+    "error": {
+      "no_request_entities": "Es muss mindestens eine Request-Entity ausgewählt werden."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "domain": "request_activation",
+  "name": "Request Activation",
+  "codeowners": ["@timzifer"],
+  "config_flow": true,
+  "documentation": "https://github.com/timzifer/ha-request-activation",
+  "integration_type": "helper",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/timzifer/ha-request-activation/issues",
+  "version": "1.0.0"
+}
