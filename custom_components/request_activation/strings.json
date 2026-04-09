@@ -17,12 +17,12 @@
         "data": {
           "request_entities": "Request Entities",
           "enabled_entity": "Enabled Entity",
-          "target_entity": "Target Entity"
+          "target_entities": "Target Entities"
         },
         "data_description": {
           "request_entities": "Boolean entities that act as request sources. The output is ON when any of these is ON.",
           "enabled_entity": "Optional entity to enable/disable the group. When OFF, the output is always OFF regardless of requests.",
-          "target_entity": "Optional entity to control directly. Will be turned on/off based on the activation state."
+          "target_entities": "Optional entities to control directly. Will be turned on/off based on the activation state."
         }
       }
     },
@@ -38,12 +38,12 @@
         "data": {
           "request_entities": "Request Entities",
           "enabled_entity": "Enabled Entity",
-          "target_entity": "Target Entity"
+          "target_entities": "Target Entities"
         },
         "data_description": {
           "request_entities": "Boolean entities that act as request sources. The output is ON when any of these is ON.",
           "enabled_entity": "Optional entity to enable/disable the group. When OFF, the output is always OFF regardless of requests.",
-          "target_entity": "Optional entity to control directly. Will be turned on/off based on the activation state."
+          "target_entities": "Optional entities to control directly. Will be turned on/off based on the activation state."
         }
       }
     },
