@@ -1,0 +1,54 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Create Request Group",
+        "description": "Create a new request activation group that combines multiple boolean entities with OR logic.",
+        "data": {
+          "name": "Group Name"
+        },
+        "data_description": {
+          "name": "A descriptive name for this request group (e.g., 'Hot Water Circulation Pump')."
+        }
+      },
+      "entities": {
+        "title": "Configure Entities",
+        "description": "Select the entities for this request group.",
+        "data": {
+          "request_entities": "Request Entities",
+          "enabled_entity": "Enabled Entity",
+          "target_entity": "Target Entity"
+        },
+        "data_description": {
+          "request_entities": "Boolean entities that act as request sources. The output is ON when any of these is ON.",
+          "enabled_entity": "Optional entity to enable/disable the group. When OFF, the output is always OFF regardless of requests.",
+          "target_entity": "Optional entity to control directly. Will be turned on/off based on the activation state."
+        }
+      }
+    },
+    "error": {
+      "no_request_entities": "You must select at least one request entity."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Entities",
+        "description": "Modify the entities for this request group.",
+        "data": {
+          "request_entities": "Request Entities",
+          "enabled_entity": "Enabled Entity",
+          "target_entity": "Target Entity"
+        },
+        "data_description": {
+          "request_entities": "Boolean entities that act as request sources. The output is ON when any of these is ON.",
+          "enabled_entity": "Optional entity to enable/disable the group. When OFF, the output is always OFF regardless of requests.",
+          "target_entity": "Optional entity to control directly. Will be turned on/off based on the activation state."
+        }
+      }
+    },
+    "error": {
+      "no_request_entities": "You must select at least one request entity."
+    }
+  }
+}
