@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_NAME, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
+from homeassistant.const import (
+    CONF_NAME,
+    EVENT_HOMEASSISTANT_STARTED,
+    STATE_ON,
+    STATE_UNAVAILABLE,
+    STATE_UNKNOWN,
+)
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
@@ -99,9 +105,21 @@ class RequestActivationBinarySensor(BinarySensorEntity):
                 )
             )
 
-        # Set initial previous state and sync target
-        self._previous_is_on = self.is_on
-        await self._sync_target_entities()
+        @callback
+        def _async_startup(_event=None):
+            """Sync state and targets once all entities are available."""
+            self._previous_is_on = self.is_on
+            self.async_write_ha_state()
+            self.hass.async_create_task(self._sync_target_entities())
+
+        if self.hass.is_running:
+            _async_startup()
+        else:
+            self.async_on_remove(
+                self.hass.bus.async_listen_once(
+                    EVENT_HOMEASSISTANT_STARTED, _async_startup
+                )
+            )
 
     @callback
     def _async_state_changed(self, event: Event) -> None:
