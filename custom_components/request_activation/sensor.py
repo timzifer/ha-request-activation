@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_NAME, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
+from homeassistant.const import (
+    CONF_NAME,
+    EVENT_HOMEASSISTANT_STARTED,
+    STATE_ON,
+    STATE_UNAVAILABLE,
+    STATE_UNKNOWN,
+)
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
@@ -66,6 +72,20 @@ class RequestActivationLevelSensor(SensorEntity):
             self.async_on_remove(
                 async_track_state_change_event(
                     self.hass, request_entities, self._async_state_changed
+                )
+            )
+
+        @callback
+        def _async_startup(_event=None):
+            """Update state once all entities are available."""
+            self.async_write_ha_state()
+
+        if self.hass.is_running:
+            _async_startup()
+        else:
+            self.async_on_remove(
+                self.hass.bus.async_listen_once(
+                    EVENT_HOMEASSISTANT_STARTED, _async_startup
                 )
             )
 
